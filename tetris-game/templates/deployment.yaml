@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tetris
+  namespace: tetris
+spec:
+  replicas: {{ .Values.replicaCount }} # Assurez-vous de ne pas mettre de guillemets ici
+  selector:
+    matchLabels:
+      app: tetris
+  template:
+    metadata:
+      labels:
+        app: tetris
+    spec:
+      containers:
+      - name: tetris
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}" # Entre guillemets pour les valeurs de chaîne
+        imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent" }}
+        ports:
+        - containerPort: 3000
