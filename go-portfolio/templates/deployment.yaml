@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-portfolio
+  namespace: go-app
+  labels:
+    role: go-portfolio
+    env: dev
+spec:
+  replicas: {{ .Values.replicaCount }} # Utilise la valeur de replicaCount dans values.yaml
+  selector:
+    matchLabels:
+      role: go-portfolio
+  template:
+    metadata:
+      labels:
+        role: go-portfolio
+    spec:
+      containers:
+      - name: go-portfolio
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}" # Utilise l'image et le tag de values.yaml
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "500m"
+          limits:
+            memory: "512Mi"
+            cpu: "1"
